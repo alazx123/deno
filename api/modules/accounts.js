@@ -8,15 +8,18 @@ const saltRounds = 10
 const salt = await genSalt(saltRounds)
 
 export async function login(credentials) {
-	const { user, pass } = credentials
-	let sql = `SELECT count(id) AS count FROM accounts WHERE user="${user}";`
+//     user其实是userName
+	const { user, pass: password } = credentials
+	let sql = `SELECT * FROM accounts WHERE user="${user}";`
 	let records = await db.query(sql)
-	if(!records[0].count) throw new Error(`username "${user}" not found`)
-	sql = `SELECT pass FROM accounts WHERE user = "${user}";`
-	records = await db.query(sql)
-	const valid = await compare(pass, records[0].pass)
+    console.log(records)
+	if(!records.length) throw new Error(`username "${user}" not found`)
+	const valid = await compare(password, records[0].pass)
+    console.log(password)
+    console.log(records[0].pass)
 	if(valid === false) throw new Error(`invalid password for account "${user}"`)
-	return user
+    const { pass, ...rest } = records[0]
+	return rest
 }
 
 export async function register(credentials) {

@@ -3,5 +3,6 @@
 	"preview": {
 		"Live Website": "https://{{domain8080}}/{{index}}",
 		"Heroku Local": "https://{{domain5000}}/{{index}}"
-	}
+	},
+  "debugger": [{"type":"NODEJS","command":"api/routes.js","before":"","uuid":"7d5ffdda-1e36-9642-5cac-8ccdccc95de6","name":"hello"}]
 }

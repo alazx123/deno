@@ -18,11 +18,11 @@ INSERT INTO accounts(user, pass)
 CREATE TABLE news(
   id int NOT null AUTO_INCREMENT,
   title varchar(45),
-  brife varchar(255),
+  brief varchar(255),
   detail longtext,
-  uid int,
+  userId int,
   imgUrl varchar(255),
-  relaseDate date,
+  releaseDate date,
   PRIMARY KEY (id)
 );
 

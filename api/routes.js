@@ -5,6 +5,7 @@ import { Router } from 'https://deno.land/x/oak@v6.5.1/mod.ts'
 
 import { extractCredentials, saveFile } from './modules/util.js'
 import { login, register } from './modules/accounts.js'
+import { addNews } from './modules/news.js'
 
 const router = new Router()
 
@@ -22,11 +23,12 @@ router.get('/api/accounts', async context => {
 	try {
 		const credentials = extractCredentials(token)
 		console.log(credentials)
-		const username = await login(credentials)
-		console.log(`username: ${username}`)
+//         这里返回的user包含userName和id，没有pass,pass不应该返回给前端
+		const user = await login(credentials)
+		console.log(`userr: ${user}`)
 		context.response.body = JSON.stringify(
 			{
-				data: { username }
+				data: { user }
 			}, null, 2)
 	} catch(err) {
 		context.response.status = 401
@@ -61,7 +63,18 @@ router.post('/api/files', async context => {
 		const body  = await context.request.body()
 		const data = await body.value
 		console.log(data)
-		saveFile(data.base64, data.user)
+        const { file, ...rest } = data
+        const { base64, userId } = file
+		const fileName = saveFile(base64, userId)
+        const imgUrl = `./spa/uploads/${fileName}`
+        const date = new Date()
+        const releaseDate = `${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}`
+        await addNews({
+            ...rest,
+            imgUrl,
+            releaseDate,
+            userId
+        })
 		context.response.status = 201
 		context.response.body = JSON.stringify(
 			{

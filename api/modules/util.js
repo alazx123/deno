@@ -73,16 +73,12 @@ async function fileExists(path) {
   }
 }
 
-export function saveFile(base64String, username) {
-	console.log('save file')
+export function saveFile(base64String, userId) {
 	const [ metadata, base64Image ] = base64String.split(';base64,')
 	console.log(metadata)
 	const extension = metadata.split('/').pop()
-	console.log(extension)
-	const filename = `${username}-${Date.now()}.${extension}`
-	console.log(filename)
+	const filename = `${userId}-${Date.now()}.${extension}`
 	Base64.fromBase64String(base64Image).toFile(`./spa/uploads/${filename}`)
-	console.log('file saved')
 	return filename
 }
 
