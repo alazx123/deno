@@ -3,7 +3,7 @@
     box-shadow: 0 2px 12px 0 rgb(0 0 0 / 10%);
     margin: 20px;
     padding: 10px;
-    cursor: pointer;
+    position: relative;
 }
 .left {
     margin-right: 20px;
@@ -16,6 +16,7 @@
     display: flex;
     box-shadow: 0 2px 12px 0 rgb(0 0 0 / 10%);
     padding: 10px;
+    position: relative;
 }
 
 .news-detail .left img {
@@ -34,4 +35,16 @@
 }
 .right p {
     margin: 5px 0px;
+}
+
+.status {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    background-color: #ccc;
+    padding: 5px;
+}
+
+.authorize-button {
+    margin-top: 20px;
 }

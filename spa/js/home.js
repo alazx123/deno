@@ -32,7 +32,8 @@ async function addContent(node) {
             title,
             brief,
             releaseDate,
-            imgUrl
+            imgUrl,
+            authorized
         } = news
         const date = new Date(releaseDate)
         const formattedReleaseDate = `${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}`
@@ -40,7 +41,28 @@ async function addContent(node) {
 		fragment.querySelector('.brief p').innerText = brief
         fragment.querySelector('.releaseDate p').innerText = formattedReleaseDate
         fragment.querySelector('img').src = imgUrl
-        fragment.querySelector('.news-container').parentNode.href=`/detail?newsId=${id}`
+        fragment.querySelector('.status').innerText = authorized ? 'Authorized' : 'New'
+//         if the user is Admin, show "Authorize" button
+        if(!authorized) {
+            const button = document.createElement('button')
+            button.innerText = 'Authorize'
+            button.classList.add('authorize-button')
+            button.addEventListener('click', async ()=>{
+                const {affectedRows} = await secureGet(`/api/authorizeNews?newsId=${id}`, authorization)
+//                 authorize news successfully
+                if(affectedRows === 1) {
+//                     refresh the page to update data
+                }
+            })
+            fragment.querySelector('.right').appendChild(button)
+        }
+        else {
+            const link = document.createElement('a')
+            link.innerText = 'View Detail'
+            link.classList.add('view-detail-link')
+            link.href=`/detail?newsId=${id}`
+            fragment.querySelector('.right').appendChild(link)
+        }
 		node.appendChild(fragment) 
 	}
 }
