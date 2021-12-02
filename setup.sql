@@ -23,6 +23,7 @@ CREATE TABLE news(
   userId int,
   imgUrl varchar(255),
   releaseDate date,
+  authorized boolean default false,
   PRIMARY KEY (id)
 );
 

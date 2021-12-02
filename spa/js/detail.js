@@ -22,7 +22,6 @@ async function addContent(node) {
     const template = document.querySelector('template#news-detail')
     const fragment = template.content.cloneNode(true)
     const params = urlParse(window.location.search)
-    console.log(params)
     const newsId = Number(params.newsId)
     const news = JSON.parse(localStorage.getItem('newsList')).find(item=>item.id === newsId)
     const {

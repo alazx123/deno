@@ -5,7 +5,7 @@ import { Router } from 'https://deno.land/x/oak@v6.5.1/mod.ts'
 
 import { extractCredentials, saveFile } from './modules/util.js'
 import { login, register } from './modules/accounts.js'
-import { addNews, getNews } from './modules/news.js'
+import { addNews, getNews, authorizeNews } from './modules/news.js'
 
 const router = new Router()
 
@@ -103,7 +103,43 @@ router.post('/api/files', async context => {
 // get news
 router.get('/api/getNews', async context => {
 	try {
-		const result = await getNews()
+        const token = context.request.headers.get('Authorization')
+        const {user} = extractCredentials(token)
+//         check user role
+		const result = await getNews(!(user==='Admin'))
+        console.log(result)
+        context.response.status = 201
+		context.response.body = result
+	} catch(err) {
+		context.response.status = 401
+		context.response.body = JSON.stringify(
+			{
+				errors: [
+					{
+						title: '401 Unauthorized.',
+						detail: err.message
+					}
+				]
+			}
+		, null, 2)
+	}
+})
+
+router.get('/api/authorizeNews', async context => {
+	try {
+//         get newsId
+        const params = {}
+        context.request.url.search.slice(1).split('&').map(item=>{
+            const [ key, value ] = item.split('=')
+            return {
+                key,
+                value
+            }
+        }).forEach(({ key, value }) => {
+            params[key] = value
+        })
+        const newsId = params.newsId
+        const result = await authorizeNews(newsId)
         console.log(result)
         context.response.status = 201
 		context.response.body = result
