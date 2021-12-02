@@ -1,0 +1,37 @@
+.news-container {
+    display: flex;
+    box-shadow: 0 2px 12px 0 rgb(0 0 0 / 10%);
+    margin: 20px;
+    padding: 10px;
+    cursor: pointer;
+}
+.left {
+    margin-right: 20px;
+}
+.left img {
+    width: 300px;
+}
+
+.news-detail {
+    display: flex;
+    box-shadow: 0 2px 12px 0 rgb(0 0 0 / 10%);
+    padding: 10px;
+}
+
+.news-detail .left img {
+    width: 400px;
+}
+
+.news-detail .right h2 {
+    margin-top: 0;
+}
+.right .author, .right .brief, .right .detail, .right .releaseDate {
+    display: flex;
+    align-items: center;
+}
+.right label {
+    width: 120px;
+}
+.right p {
+    margin: 5px 0px;
+}
