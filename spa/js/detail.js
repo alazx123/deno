@@ -7,7 +7,7 @@ export async function setup(node) {
 	try {
 		console.log(node)
 		document.querySelector('header p').innerText = 'Detail'
-		customiseNavbar(['home', 'foo', 'logout']) // navbar if logged in
+		customiseNavbar(['home', 'addNews', 'logout']) // navbar if logged in
 		const token = localStorage.getItem('authorization')
 		if(token === null) customiseNavbar(['home', 'register', 'login']) //navbar if logged out
 		// add content to the page
