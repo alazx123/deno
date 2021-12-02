@@ -4,3 +4,5 @@
 @import url(./material.css) (pointer: coarse);
 
 @import url(./custom.css) (pointer: fine);
+
+@import url(./home.css) (pointer: fine);

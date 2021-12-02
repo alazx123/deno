@@ -5,7 +5,7 @@ import { Router } from 'https://deno.land/x/oak@v6.5.1/mod.ts'
 
 import { extractCredentials, saveFile } from './modules/util.js'
 import { login, register } from './modules/accounts.js'
-import { addNews } from './modules/news.js'
+import { addNews, getNews } from './modules/news.js'
 
 const router = new Router()
 
@@ -23,7 +23,7 @@ router.get('/api/accounts', async context => {
 	try {
 		const credentials = extractCredentials(token)
 		console.log(credentials)
-//         这里返回的user包含userName和id，没有pass,pass不应该返回给前端
+//         the user returned here includes userName and id，without pass because pass should not be returned to front-end for security reasons
 		const user = await login(credentials)
 		console.log(`userr: ${user}`)
 		context.response.body = JSON.stringify(
@@ -45,6 +45,7 @@ router.get('/api/accounts', async context => {
 	}
 })
 
+// register
 router.post('/api/accounts', async context => {
 	console.log('POST /api/accounts')
 	const body  = await context.request.body()
@@ -55,6 +56,7 @@ router.post('/api/accounts', async context => {
 	context.response.body = JSON.stringify({ status: 'success', msg: 'account created' })
 })
 
+// add news
 router.post('/api/files', async context => {
 	console.log('POST /api/files')
 	try {
@@ -66,7 +68,7 @@ router.post('/api/files', async context => {
         const { file, ...rest } = data
         const { base64, userId } = file
 		const fileName = saveFile(base64, userId)
-        const imgUrl = `./spa/uploads/${fileName}`
+        const imgUrl = `/uploads/${fileName}`
         const date = new Date()
         const releaseDate = `${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}`
         await addNews({
@@ -95,6 +97,28 @@ router.post('/api/files', async context => {
 				]
 			}
 		)
+	}
+})
+
+// get news
+router.get('/api/getNews', async context => {
+	try {
+		const result = await getNews()
+        console.log(result)
+        context.response.status = 201
+		context.response.body = result
+	} catch(err) {
+		context.response.status = 401
+		context.response.body = JSON.stringify(
+			{
+				errors: [
+					{
+						title: '401 Unauthorized.',
+						detail: err.message
+					}
+				]
+			}
+		, null, 2)
 	}
 })
 

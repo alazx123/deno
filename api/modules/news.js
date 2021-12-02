@@ -7,3 +7,9 @@ export async function addNews(news) {
 	await db.query(sql)
 	return true
 }
+
+export async function getNews() {
+	const sql = `SELECT * FROM news JOIN accounts on news.userId = accounts.id`
+	const result = await db.query(sql)
+	return result
+}
